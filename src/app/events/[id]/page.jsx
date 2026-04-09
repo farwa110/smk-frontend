@@ -7,7 +7,7 @@ import BackButton from "@/app/components/BackButton";
 export default async function Page({ params }) {
   const { id } = await params; // params er allerede et objekt
 
-  const response = await fetch(`https://async-exhibit-server-2awc.onrender.com/events/${id}`, {
+  const response = await fetch(`https://smk-backend-f1ia.onrender.com/events/${id}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",

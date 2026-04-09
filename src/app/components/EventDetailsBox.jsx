@@ -8,7 +8,7 @@ export default function EventDetailsBox({ eventId, className }) {
   const [tickets, setTickets] = useState(1);
 
   const fetchEvent = async () => {
-    const res = await fetch(`https://async-exhibit-server-2awc.onrender.com/events/${eventId}`);
+    const res = await fetch(`https://smk-backend-f1ia.onrender.com/events/${eventId}`);
     const data = await res.json();
     setEventData(data);
   };

@@ -109,7 +109,7 @@
 // lib/api.js
 
 // Definerer base-URL til API'et – bruger miljøvariabel hvis den findes, ellers fallback til localhost
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://async-exhibit-server-2awc.onrender.com";
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://smk-backend-f1ia.onrender.com";
 
 // Hent alle events fra API'et
 export async function getAllEvents() {

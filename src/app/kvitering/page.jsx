@@ -3,7 +3,7 @@ import BackButton from "@/app/components/BackButton";
 
 export default async function Kvittering({ searchParams }) {
   const { id } = await searchParams;
-  const response = await fetch(`https://async-exhibit-server-2awc.onrender.com/events/${id}`);
+  const response = await fetch(`https://smk-backend-f1ia.onrender.com/events/${id}`);
   const data = await response.json();
 
   return (

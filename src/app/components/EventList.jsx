@@ -21,7 +21,7 @@ export default function EventList() {
 
   // Denne funktion henter alle events fra backend
   const fetchEvents = () => {
-    fetch("https://async-exhibit-server-2awc.onrender.com/events")
+    fetch("https://smk-backend-f1ia.onrender.com/events")
       .then((res) => res.json())
       .then((data) => setEvents(data)) // gem i state
       .catch((err) => console.log("Fejl ved hentning:", err));

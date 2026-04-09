@@ -106,7 +106,7 @@ export default function CreateEvent({ date, locations }) {
     };
 
     try {
-      const response = await fetch("https://async-exhibit-server-2awc.onrender.com/events", {
+      const response = await fetch("https://smk-backend-f1ia.onrender.com/events", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(dataToSend),
