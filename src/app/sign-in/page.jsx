@@ -134,7 +134,7 @@ export default function AuthPage() {
     setError("");
     setIsLoading(true);
     try {
-      await signUp.create({ emailAddress: email, password, username: email.split("@")[0] });
+      await signUp.create({ emailAddress: email, password });
       await signUp.prepareEmailAddressVerification({ strategy: "email_code" });
       setView("verify");
     } catch (err) {
