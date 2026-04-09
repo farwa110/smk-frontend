@@ -1,0 +1,142 @@
+@import "tailwindcss";
+
+/* Custom animation */
+@layer utilities {
+  @keyframes fadeInUp {
+    0% {
+      opacity: 0;
+      transform: translateY(40px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-fadeInUp {
+    animation: fadeInUp 0.8s ease-out forwards;
+  }
+}
+
+:root {
+  --background: #fffefe;
+  --foreground: #171717;
+  --darkblue: #151c43;
+  --lightblue: #d5d6e1;
+  --blue: #2b346b;
+  --orange: #d97c2b;
+  --lightorange: #ffa04e;
+  --darkorange: #bd6111;
+  --black: #0d0d0d;
+  --black-75: #3d3d3d;
+  --black-40: #929292;
+  --gray: #556273;
+  --darkgray: #2c3b4f;
+  --lightgray: #bbc0c7;
+  --white: #ffffff;
+  --my-flipcardgray: #9ca3af;
+
+  --heading-color: var(--black);
+  --body-color: var(--black-40);
+}
+
+@theme {
+  --color-my-orange: var(--orange);
+  --color-my-orangedark: var(--darkorange);
+  --color-my-orangelight: var(--lightorange);
+  --color-my-blue: var(--blue);
+  --color-my-bluedark: var(--darkblue);
+  --color-my-bluelight: var(--lightblue);
+  --color-my-black: var(--black);
+  --color-my-black75: var(--black-75);
+  --color-my-black40: var(--black-40);
+  --color-my-gray: var(--gray);
+  --color-my-graydark: var(--darkgray);
+  --color-my-graylight: var(--lightgray);
+  --color-my-white: var(--white);
+
+  --color-my-heading: var(--heading-color);
+  --color-my-body: var(--body-color);
+  --color-my-flipcardgray: var(--my-flipcardgray);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-playfair: var(--font-playfair);
+  /* --font-noto: var(--font-notosans); */
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  grid-template-columns:
+    [full-bleed-start]minmax(1rem, 1fr)
+    [content-start]minmax(0, 1400px) [content-end] minmax(1rem, 1fr)
+    [full-bleed-end];
+  row-gap: 1rem;
+  background-color: var(--background);
+}
+
+header,
+footer,
+main,
+.fullbleed {
+  grid-column: full-bleed;
+  display: grid;
+  grid-template-columns: subgrid;
+  > :not(&) {
+    grid-column: content;
+  }
+}
+
+img {
+  align-self: stretch;
+  object-fit: cover;
+}
+/* img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; 
+} */
+
+/* kunstgalleri */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+/* event card and page*/
+body,
+html {
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+/** flip-card animation */
+
+.perspective {
+  perspective: 1000px;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+}
+
+.rotate-y-180 {
+  transform: rotateY(180deg);
+}
