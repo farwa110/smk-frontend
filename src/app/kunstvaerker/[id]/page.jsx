@@ -7,7 +7,7 @@ import KunstGalleri from "@/app/components/KunstGalleri";
 import BackButton from "@/app/components/BackButton";
 
 export default async function Page({ params }) {
-  const { id } = params;
+  const { id } = await params;
 
   const response = await fetch(`https://api.smk.dk/api/v1/art/?object_number=${id}`, {
     method: "GET",
