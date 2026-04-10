@@ -75,8 +75,8 @@ const KunstGalleri = () => {
                 <Image
                   src={art.image_thumbnail || "/dummy.webp"}
                   alt={art.titles?.[0]?.title || "Artwork"}
-                  // width={300}
-                  // height={600}
+                  // width={auto}
+                  // height={auto}
                   fill
                   style={{ objectFit: "cover" }}
                   className="transition-transform duration-300 hover:scale-105"

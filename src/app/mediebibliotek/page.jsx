@@ -3,7 +3,7 @@
 import { useRef } from "react";
 import BucketGallery from "../components/BucketGallery";
 
-export default function Dashboard() {
+export default function Mediebibliotek() {
   // Ref til BucketGallery for at kunne kalde deleteFromGallery
   const bucketGalleryRef = useRef(null);
 
@@ -16,7 +16,7 @@ export default function Dashboard() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold">Dashboard</h1>
+      <h1 className="text-2xl font-bold"></h1>
 
       <BucketGallery ref={bucketGalleryRef} />
     </div>

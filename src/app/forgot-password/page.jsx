@@ -20,6 +20,7 @@ export default function ForgotPasswordPage() {
     if (!isLoaded) return;
 
     setError("");
+
     setIsLoading(true);
 
     try {
@@ -36,32 +37,6 @@ export default function ForgotPasswordPage() {
     }
   };
 
-  // const handleReset = async (e) => {
-  //   e.preventDefault();
-  //   if (!isLoaded) return;
-
-  //   setError("");
-  //   setIsLoading(true);
-
-  //   try {
-  //     const result = await signIn.attemptFirstFactor({
-  //       strategy: "reset_password_email_code",
-  //       code,
-  //       password,
-  //     });
-
-  //     if (result.status === "complete") {
-  //       await setActive({ session: result.createdSessionId });
-  //       router.push("/");
-  //     } else {
-  //       setError("Nulstilling blev ikke fuldført.");
-  //     }
-  //   } catch (err) {
-  //     setError(err?.errors?.[0]?.message || "Noget gik galt.");
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
   const handleReset = async (e) => {
     e.preventDefault();
     if (!isLoaded) return;
