@@ -20,7 +20,8 @@ const Header = () => {
           {/* Logo */}
           <Link href="/" className="flex items-center whitespace-nowrap focus:outline-none">
             <motion.div whileTap={{ scale: 1.2 }} transition={{ duration: 0.2, ease: "easeInOut" }}>
-              <Image src={logoImg} alt="Logo" width={100} height={100} className="mr-2" />
+              {/* <Image src={logoImg} alt="Logo" width={100} height={100} className="mr-2" /> */}
+              <Image src={logoImg} alt="Logo" width={120} height={0} className="mr-2 h-auto" priority />
             </motion.div>
           </Link>
 

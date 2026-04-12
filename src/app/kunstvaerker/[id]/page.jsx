@@ -1,4 +1,4 @@
-// // // src/app/kunstværker/[id]/page.jsx
+// // // // src/app/kunstværker/[id]/page.jsx
 
 import React from "react";
 import KunstBilledBox from "@/app/components/KunstBilledBox";
@@ -14,17 +14,19 @@ export default async function Page({ params }) {
     headers: {
       "Content-Type": "application/json",
     },
-    // cache: "no-store",
   });
 
   const data = await response.json();
-  console.log("kunst data:", data);
+  const item = data?.items?.[0];
+
+  const artistName = item?.artist?.[0] || "";
 
   return (
     <div>
       <div className="cursor-pointer hover:opacity-80 transition font-sans font-semibold mb-4 mt-3">
         <BackButton />
       </div>
+
       <div className="flex flex-col lg:flex-row items-stretch justify-center gap-6 mt-20 mb-20 px-6 max-w-6xl mx-auto">
         <div className="w-full lg:w-1/2 flex flex-col min-h-0 md:p-5">
           <KunstBilledBox data={data} className="flex-grow" />
@@ -34,7 +36,8 @@ export default async function Page({ params }) {
           <KunstTextBox data={data} className="flex-grow overflow-auto" />
         </div>
       </div>
-      <KunstGalleri />
+
+      <KunstGalleri currentArtist={artistName} currentObjectNumber={id} />
     </div>
   );
 }

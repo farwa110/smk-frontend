@@ -27,6 +27,7 @@ export default function ChangeEventPage({ params }) {
   const router = useRouter();
 
   // States
+  const [pageLoading, setPageLoading] = useState(true);
   const [artworks, setArtworks] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -93,12 +94,14 @@ export default function ChangeEventPage({ params }) {
               };
             }
             return { id: artIdWithoutExt, title: artIdWithoutExt, image: dummy.src };
-          })
+          }),
         );
         setArtworks(responses);
       } catch (err) {
         console.error("Fejl:", err);
         setError(err.message);
+      } finally {
+        setPageLoading(false); // ← yahan
       }
     };
 
@@ -173,7 +176,41 @@ export default function ChangeEventPage({ params }) {
     }
   };
 
+  // if (error) return <p className="text-red-600 p-4">{error}</p>;
+
   if (error) return <p className="text-red-600 p-4">{error}</p>;
+
+  if (pageLoading)
+    return (
+      <div>
+        <div className="cursor-pointer hover:opacity-80 transition font-sans font-semibold">
+          <BackButton />
+        </div>
+        <div className="w-full max-w-3xl mx-auto p-6 bg-white shadow mt-6 space-y-5">
+          <div className="h-8 w-48 bg-my-blue/10  animate-pulse" />
+          <div className="h-10 w-full bg-my-blue/10  animate-pulse" />
+          <div className="flex gap-4">
+            <div className="h-10 w-1/2 bg-my-blue/10  animate-pulse" />
+            <div className="h-10 w-1/2 bg-my-blue/10 animate-pulse" />
+          </div>
+          <div className="h-10 w-full bg-my-blue/10  animate-pulse" />
+          <div className="h-24 w-full bg-my-blue/10  animate-pulse" />
+          <div className="space-y-2">
+            <div className="h-4 w-32 bg-my-blue/10  animate-pulse" />
+            <div className="h-32 w-32 bg-my-blue/10 animate-pulse" />
+          </div>
+          <div className="space-y-2">
+            <div className="h-4 w-44 bg-my-blue/10  animate-pulse" />
+            <div className="flex gap-4">
+              {Array.from({ length: 3 }).map((_, i) => (
+                <div key={i} className="h-28 w-28 bg-my-blue/10  animate-pulse" />
+              ))}
+            </div>
+          </div>
+          <div className="h-10 w-36 bg-my-blue/10 animate-pulse" />
+        </div>
+      </div>
+    );
 
   return (
     <div>
@@ -225,7 +262,7 @@ export default function ChangeEventPage({ params }) {
             <input type="file" accept="image/*" onChange={handleImageUpload} />
             {uploadedImageUrl && (
               <div className="mt-2">
-                <img src={uploadedImageUrl} alt="Uploaded" className="w-32 rounded" />
+                <img src={uploadedImageUrl} alt="Uploaded" className="w-32" />
                 <button type="button" onClick={handleDeleteImage} className="mt-1 text-sm text-red-600 underline">
                   Slet billede
                 </button>
@@ -247,11 +284,11 @@ export default function ChangeEventPage({ params }) {
                         e.preventDefault();
                         handleRemoveArtwork(art.id);
                       }}
-                      className="absolute top-1 right-1 bg-red-600 text-white text-xs px-1 rounded transition"
+                      className="absolute top-1 right-1 bg-red-600 text-white text-xs px-1 transition"
                     >
                       Fjern
                     </button>
-                    <img src={art.image} alt={art.title} className="w-full h-auto mb-1 rounded" />
+                    <img src={art.image} alt={art.title} className="w-full h-auto mb-1" />
                     <p className="text-xs font-medium break-words">{art.title}</p>
                   </div>
                 ))}
