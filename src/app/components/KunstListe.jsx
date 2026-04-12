@@ -77,19 +77,10 @@ export default function KunstListe({ onAddArtwork, onRemoveArtwork, selectedArtw
         <div className="w-full max-w-2xl ">
           <form className="flex mb-4" onSubmit={handleSearchSubmit}>
             <input type="text" value={searchInput} onChange={handleSearchChange} className="flex-grow border border-gray-500 bg-white p-2 focus:outline-none focus:ring-2 focus:ring-my-blue transition-all duration-200 rounded-l" placeholder="Søg..." />
-            <button type="submit" className="bg-my-blue text-white px-4 py-2 rounded-r hover:bg-my-orangedark transition">
+            <button type="submit" className="bg-my-blue text-white px-4 py-2  hover:bg-my-blue/80 transition">
               Søg
             </button>
           </form>
-          {/* <button onClick={() => setFilter("&filters=%5Bcolors%3A%23FFFFFF%5D")} className="bg-my-blue text-white px-4 py-2 rounded-r hover:bg-my-orangedark transition">
-            filtrer hvid
-          </button>
-          <button onClick={() => setFilter("&filters=%5Bcolors%3A%23000000%5D")} className="bg-my-blue text-white px-4 py-2 rounded-r hover:bg-my-orangedark transition">
-            filtrer sort
-          </button>
-          <button onClick={() => setFilter("")} className="bg-my-blue text-white px-4 py-2 rounded-r hover:bg-my-orangedark transition">
-            reset
-          </button> */}
         </div>
         <SortSelector
           sortBy={sortBy}
@@ -166,7 +157,7 @@ export default function KunstListe({ onAddArtwork, onRemoveArtwork, selectedArtw
         <p className="text-gray-600">Ingen værker fundet.</p>
       )}
 
-      <button onClick={() => setRows(rows + 8)} className="mt-10 bg-my-blue text-white px-4 py-2 rounded-r hover:bg-my-orangedark transition">
+      <button onClick={() => setRows(rows + 8)} className="mt-10 bg-my-blue text-white px-4 py-2  hover:bg-my-blue/80 transition">
         se mere
       </button>
     </div>

@@ -5,7 +5,7 @@ import EventButton from "@/app/components/EventButton";
 
 export default function EventDetailsBox({ eventId, className }) {
   const [eventData, setEventData] = useState(null);
-  const [tickets, setTickets] = useState(1);
+  const [tickets, setTickets] = useState(0);
 
   const fetchEvent = async () => {
     const res = await fetch(`https://smk-backend-f1ia.onrender.com/events/${eventId}`);
@@ -26,7 +26,41 @@ export default function EventDetailsBox({ eventId, className }) {
     return () => document.removeEventListener("visibilitychange", handleVisibilityChange);
   }, []);
 
-  if (!eventData) return <p>Loading event data...</p>;
+  // if (!eventData) return <p>Loading event data...</p>;
+  if (!eventData)
+    return (
+      <section className={`w-full max-w-2xl mx-auto space-y-4 px-4 ${className}`}>
+        {/* Title */}
+        <div className="h-8 w-2/3 bg-my-blue/10 rounded animate-pulse" />
+
+        {/* Description */}
+        <div className="space-y-2">
+          <div className="h-4 w-full bg-my-blue/10 rounded animate-pulse" />
+          <div className="h-4 w-full bg-my-blue/10 rounded animate-pulse" />
+          <div className="h-4 w-4/5 bg-my-blue/10 rounded animate-pulse" />
+        </div>
+
+        {/* Kurator / Dato / Lokation */}
+        <div className="space-y-2">
+          <div className="h-4 w-1/2 bg-my-blue/10 rounded animate-pulse" />
+          <div className="h-4 w-1/3 bg-my-blue/10 rounded animate-pulse" />
+          <div className="h-4 w-2/5 bg-my-blue/10 rounded animate-pulse" />
+        </div>
+
+        {/* Tickets row */}
+        <div className="flex justify-between items-center mt-4">
+          <div className="h-4 w-1/4 bg-my-blue/10 rounded animate-pulse" />
+          <div className="flex gap-2">
+            <div className="h-8 w-8 bg-my-blue/10 rounded animate-pulse" />
+            <div className="h-8 w-6 bg-my-blue/10 rounded animate-pulse" />
+            <div className="h-8 w-8 bg-my-blue/10 rounded animate-pulse" />
+          </div>
+        </div>
+
+        {/* Button */}
+        <div className="h-11 w-full bg-my-blue/10 rounded animate-pulse mt-6" />
+      </section>
+    );
 
   const { title, description, date, curator, totalTickets, bookedTickets, location } = eventData;
   const ticketsLeft = totalTickets - bookedTickets;
@@ -63,21 +97,29 @@ export default function EventDetailsBox({ eventId, className }) {
       </div>
 
       <div className="flex flex-wrap items-center justify-between gap-y-4 mt-4">
-        <p className="text-sm sm:text-base text-green-700 font-sans font-medium">Billetter tilbage: {ticketsLeft}</p>
+        <p className="text-sm sm:text-base font-sans font-medium">{ticketsLeft === 0 ? <span className="text-red-500">Ingen billetter tilbage</span> : <span className="text-green-700">Billetter tilbage: {ticketsLeft}</span>}</p>
 
-        <div className="flex items-center space-x-2">
-          <button onClick={handleDecrement} className="px-2 py-1 bg-[#bcc2ef] w-8 h-8 text-xl rounded">
-            -
-          </button>
-          <span className="text-lg font-medium">{tickets}</span>
-          <button onClick={handleIncrement} className="px-2 py-1 bg-[#bcc2ef] w-8 h-8 text-xl rounded">
-            +
-          </button>
-        </div>
+        {ticketsLeft > 0 && (
+          <div className="flex items-center space-x-2">
+            <button onClick={handleDecrement} disabled={tickets <= 0} className="px-2 py-1 bg-[#bcc2ef] w-8 h-8 text-xl rounded disabled:opacity-40">
+              -
+            </button>
+            <span className="text-lg font-medium">{tickets}</span>
+            <button onClick={handleIncrement} disabled={tickets >= ticketsLeft} className="px-2 py-1 bg-[#bcc2ef] w-8 h-8 text-xl rounded disabled:opacity-40">
+              +
+            </button>
+          </div>
+        )}
       </div>
 
       <div className="mt-6">
-        <EventButton tickets={tickets} id={eventData.id} />
+        {ticketsLeft === 0 ? (
+          <button disabled className="w-full bg-gray-300 text-gray-500 py-3 rounded-lg cursor-not-allowed font-sans">
+            Udsolgt
+          </button>
+        ) : (
+          <EventButton tickets={tickets} id={eventData.id} disabled={tickets === 0} />
+        )}
       </div>
     </section>
   );

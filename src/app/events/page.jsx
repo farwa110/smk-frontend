@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import EventCard from "../components/EventCard";
+import EventCardSkeleton from "../components/EventCardSkeleton";
 
 import { getAllEvents } from "@/lib/api";
 import { eventsFilter } from "@/lib/eventsFilter";
@@ -31,6 +32,10 @@ const letter = {
 };
 
 export default function EventsPage() {
+  const metadata = {
+    title: "Events",
+    description: "Udforsk kommende events fordelt på lokationer.",
+  };
   const [events, setEvents] = useState([]);
   const [locations, setLocations] = useState([]);
   const [error, setError] = useState(null);
@@ -129,6 +134,7 @@ export default function EventsPage() {
 
   const skeletonCards = Array.from({ length: 2 });
 
+  // const showPageSkeleton = loadingEvents || loadingLocations;
   const showPageSkeleton = loadingEvents || loadingLocations;
 
   return (
@@ -166,13 +172,20 @@ export default function EventsPage() {
         <div className="space-y-10">
           {Array.from({ length: 3 }).map((_, sectionIndex) => (
             <div key={sectionIndex} className="mb-10 px-4 md:px-0 max-w-full overflow-hidden">
-              <div className="h-10 w-44 rounded border border-gray-200 bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 animate-pulse mb-6" />
+              {/* Location heading skeleton */}
+              <div className="h-10 w-44  border border-gray-200 bg-my-blue/10 animate-pulse mb-6" />
+              {/* Cards skeleton */}
+              <div className="flex flex-col md:flex-row gap-4">
+                {Array.from({ length: 2 }).map((_, cardIndex) => (
+                  <EventCardSkeleton key={cardIndex} />
+                ))}
+              </div>
             </div>
           ))}
         </div>
       ) : locations.length === 0 ? (
         <div className="min-h-[320px] flex items-center justify-center">
-          <div className="w-full max-w-xl bg-white shadow-sm border border-gray-200 rounded-xl p-10 text-center">
+          <div className="w-full max-w-xl bg-white shadow-sm border border-gray-200 p-10 text-center">
             <div className="text-3xl mb-4">📍</div>
             <h2 className="text-2xl font-playfair font-semibold text-my-blue mb-2">Ingen lokationer fundet</h2>
             <p className="text-gray-500 font-sans">Der er ingen eventlokationer at vise lige nu.</p>
@@ -181,13 +194,13 @@ export default function EventsPage() {
       ) : (
         eventsByLocation.map((loc) => (
           <section key={loc.id} className="mb-12 px-4 md:px-0 max-w-full overflow-hidden">
-            <h2 className="flex items-center gap-2 border border-my-orangedark text-my-orangedark px-3 py-1.5 w-fit font-semibold text-lg mb-6 mt-8 rounded-sm">
+            <h2 className="flex items-center gap-2 border border-my-orangedark text-my-orangedark px-3 py-1.5 w-fit font-semibold text-lg mb-6 mt-8">
               <FaMapMarkerAlt className="text-my-orangedark" />
               {loc.name}
             </h2>
 
             {loc.items.length === 0 ? (
-              <div className="bg-white border border-gray-200 rounded-xl p-8 text-center min-h-[180px] flex flex-col items-center justify-center">
+              <div className="bg-white border border-gray-200 p-8 text-center min-h-[180px] flex flex-col items-center justify-center">
                 <p className="text-gray-500 font-sans">Ingen events at vise for denne lokation.</p>
               </div>
             ) : (

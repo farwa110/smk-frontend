@@ -6,7 +6,7 @@ import dummy from "../assets/dummy.webp";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import Link from "next/link";
-// import EventCardSkeleton from "../components/EventCardSkeleton";
+import crownColored from "../assets/crown_colored.png";
 
 const PERIODS = [
   { label: "Alle", from: null, to: null },
@@ -22,62 +22,19 @@ const PERIODS = [
 ];
 
 export default function GalleriPage() {
+  const metadata = {
+    title: "Kunstgalleri",
+    description: "Udforsk SMK's kunstsamling fra Statens Museum for Kunst.",
+  };
+  const [loading, setLoading] = useState(false);
+  const [showSkeleton, setShowSkeleton] = useState(false);
+  const [activePeriod, setActivePeriod] = useState(PERIODS[0]);
   const [artworks, setArtworks] = useState([]);
   const [error, setError] = useState(null);
   const [sortBy, setSortBy] = useState("artist");
   const [searchInput, setSearchInput] = useState("");
   const [searchQuery, setSearchQuery] = useState("*");
   const [rows, setRows] = useState(52);
-  const [loading, setLoading] = useState(false);
-  const [activePeriod, setActivePeriod] = useState(PERIODS[0]);
-
-  // useEffect(() => {
-  //   setLoading(true);
-
-  //   const fetchRows = activePeriod.from !== null ? 500 : rows;
-
-  //   const url = `https://api.smk.dk/api/v1/art/search/?keys=${encodeURIComponent(searchQuery)}&filters=[has_image:true]&offset=0&rows=${fetchRows}`;
-
-  //   console.log("Fetching URL:", url);
-
-  //   fetch(url)
-  //     .then((res) => {
-  //       if (!res.ok) {
-  //         throw new Error("API request failed");
-  //       }
-  //       return res.json();
-  //     })
-  //     .then((data) => {
-  //       let items = data.items || [];
-
-  //       if (activePeriod.from !== null) {
-  //         items = items.filter((item) => {
-  //           const ranges = item.production_date || [];
-
-  //           return ranges.some((date) => {
-  //             const start = date.start ? new Date(date.start).getFullYear() : null;
-  //             const end = date.end ? new Date(date.end).getFullYear() : start;
-
-  //             if (!start && !end) return false;
-
-  //             const itemStart = start ?? end;
-  //             const itemEnd = end ?? start;
-
-  //             return itemEnd >= activePeriod.from && itemStart <= activePeriod.to;
-  //           });
-  //         });
-  //       }
-
-  //       setArtworks(items);
-  //       setError(null);
-  //     })
-  //     .catch((err) => {
-  //       console.error(err);
-  //       setError("Kunne ikke hente værker fra SMK.");
-  //       setArtworks([]);
-  //     })
-  //     .finally(() => setLoading(false));
-  // }, [searchQuery, rows, activePeriod]);
 
   useEffect(() => {
     let isMounted = true;
@@ -190,7 +147,6 @@ export default function GalleriPage() {
   });
 
   const skeletonCards = Array.from({ length: 9 });
-  const [showSkeleton, setShowSkeleton] = useState(false);
 
   return (
     <div className="max-w-6xl mx-auto px-6 py-12">
@@ -203,8 +159,8 @@ export default function GalleriPage() {
 
       <div className="flex flex-col sm:flex-row justify-between gap-4 mb-8">
         <form className="flex w-full max-w-xl" onSubmit={handleSearchSubmit}>
-          <input type="text" value={searchInput} onChange={(e) => setSearchInput(e.target.value)} className="flex-grow border border-gray-400 bg-white p-2 focus:outline-none focus:ring-2 focus:ring-my-blue transition rounded-l" placeholder="Søg efter kunstværk, kunstner..." />
-          <button type="submit" className="bg-my-blue text-white px-5 py-2 rounded-r hover:bg-my-orangedark transition font-sans">
+          <input type="text" value={searchInput} onChange={(e) => setSearchInput(e.target.value)} className="flex-grow border border-gray-400 bg-white p-2 focus:outline-none focus:ring-2 focus:ring-my-blue transition" placeholder="Søg efter kunstværk, kunstner..." />
+          <button type="submit" className="bg-my-blue text-white px-5 py-2  hover:bg-my-blue/80 transition font-sans">
             Søg
           </button>
         </form>
@@ -218,7 +174,7 @@ export default function GalleriPage() {
           <ul className="flex gap-2 overflow-x-auto pb-2 lg:block lg:space-y-1 lg:pb-0">
             {PERIODS.map((period) => (
               <li key={period.label} className="shrink-0 lg:shrink">
-                <button onClick={() => handlePeriodClick(period)} className={`w-full min-w-[140px] lg:min-w-0 text-left px-3 py-2 rounded text-sm font-sans transition ${activePeriod.label === period.label ? "bg-my-blue text-white font-medium" : "text-gray-600 hover:bg-gray-100 hover:text-my-blue"}`}>
+                <button onClick={() => handlePeriodClick(period)} className={`w-full min-w-[140px] lg:min-w-0 text-left px-3 py-2  text-sm font-sans transition ${activePeriod.label === period.label ? "bg-my-blue text-white font-medium" : "text-gray-600 hover:bg-gray-100 hover:text-my-blue"}`}>
                   {period.label}
                   {period.from && (
                     <span className={`block text-xs mt-0.5 ${activePeriod.label === period.label ? "text-blue-200" : "text-gray-400"}`}>
@@ -250,30 +206,15 @@ export default function GalleriPage() {
 
           {error && <p className="text-red-600 mb-6">{error}</p>}
 
-          {/* {showSkeleton ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {skeletonCards.map((_, index) => (
-                <div key={index} className="bg-white shadow animate-pulse rounded">
-                  <div className="w-full h-52 bg-gray-200 rounded-t"></div>
-                  <div className="p-4">
-                    <div className="h-5 bg-gray-200 rounded w-3/4 mb-3"></div>
-                    <div className="h-4 bg-gray-200 rounded w-1/2 mb-2"></div>
-                    <div className="h-4 bg-gray-200 rounded w-1/4"></div>
-                  </div>
-                </div>
-              ))}
-              
-            </div> */}
           {showSkeleton ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {skeletonCards.map((_, index) => (
-                <div key={index} className="bg-white shadow rounded overflow-hidden border border-gray-100">
-                  <div className="w-full h-52 bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 animate-pulse"></div>
-
+                <div key={index} className=" overflow-hidden border border-gray-100">
+                  <div className="w-full h-52 bg-my-blue/10 animate-pulse" />
                   <div className="p-4 space-y-3">
-                    <div className="h-5 rounded bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 animate-pulse w-3/4"></div>
-                    <div className="h-4 rounded bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 animate-pulse w-1/2"></div>
-                    <div className="h-4 rounded bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 animate-pulse w-1/4"></div>
+                    <div className="h-5  bg-my-blue/10 animate-pulse w-3/4" />
+                    <div className="h-4  bg-my-blue/10 animate-pulse w-1/2" />
+                    <div className="h-4  bg-my-blue/10 animate-pulse w-1/4" />
                   </div>
                 </div>
               ))}
@@ -287,9 +228,9 @@ export default function GalleriPage() {
                   const artist = item.artist?.[0] || "Ukendt kunstner";
 
                   return (
-                    <motion.div key={item.id} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, ease: "easeOut" }} whileHover={{ y: -4 }} className="bg-white shadow hover:shadow-lg transition-all duration-300 rounded">
+                    <motion.div key={item.id} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, ease: "easeOut" }} whileHover={{ y: -4 }} className="bg-white shadow hover:shadow-lg transition-all duration-300">
                       <Link href={`/kunstvaerker/${item.object_number}`}>
-                        <div className="overflow-hidden rounded-t">
+                        <div className="overflow-hidden">
                           <Image src={item.has_image && item.image_thumbnail ? item.image_thumbnail : dummy} alt={title} width={400} height={300} className="w-full h-52 object-cover hover:scale-105 transition-transform duration-500" />
                         </div>
                         <div className="p-4">
@@ -305,36 +246,22 @@ export default function GalleriPage() {
 
               {sortedArtworks.length >= rows && (
                 <div className="flex justify-center mt-12">
-                  <button onClick={() => setRows(rows + 12)} className="bg-my-blue text-white px-8 py-3 hover:bg-my-orangedark transition font-sans text-sm rounded">
+                  <button onClick={() => setRows(rows + 12)} className="bg-my-blue text-white px-8 py-3 hover:bg-my-orangedark transition font-sans text-sm">
                     Se flere kunstværker
                   </button>
                 </div>
               )}
             </>
           ) : (
-            // <div className="flex items-center justify-center min-h-[420px]">
-            //   <div className="w-full max-w-md bg-white shadow-sm border border-gray-200 rounded-xl p-8 text-center">
-            //     <div className="w-14 h-14 mx-auto mb-4 rounded-full bg-gray-100 flex items-center justify-center text-2xl">🎨</div>
-            //     <h3 className="text-lg font-semibold text-my-blue font-playfair mb-2">Ingen kunstværker fundet</h3>
-            //     <p className="text-sm text-gray-500 font-sans mb-5">Prøv en anden søgning eller vælg en anden tidsperiode for at se flere værker.</p>
-            //     <button
-            //       onClick={() => {
-            //         setActivePeriod(PERIODS[0]);
-            //         setSearchInput("");
-            //         setSearchQuery("*");
-            //         setRows(52);
-            //       }}
-            //       className="bg-my-blue text-white px-5 py-2 rounded hover:bg-my-orangedark transition font-sans text-sm"
-            //     >
-            //       Nulstil filtre
-            //     </button>
-            //   </div>
-            // </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 min-h-[420px]">
               <div className="col-span-full flex items-center justify-center">
-                <div className="w-full max-w-lg bg-white shadow-sm border border-gray-200 rounded-xl p-10 text-center">
-                  <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-100 flex items-center justify-center text-3xl">🎨</div>
-
+                <div className="w-full max-w-lg bg-white shadow-sm border border-gray-200  p-10 text-center">
+                  {/* <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-100 flex items-center justify-center text-3xl">
+                    <Img src={crownColored} alt="Ingen resultater" className="w-8 h-8 object-cover" />
+                  </div> */}
+                  <div className=" mx-auto mb-4  flex items-center justify-center">
+                    <Image src={crownColored} alt="Crown" width={32} height={32} className="object-contain" />
+                  </div>
                   <h3 className="text-xl font-semibold text-my-blue font-playfair mb-2">Ingen kunstværker fundet</h3>
 
                   <p className="text-sm text-gray-500 font-sans mb-6">Prøv en anden søgning eller vælg en anden tidsperiode for at se flere værker.</p>
@@ -346,7 +273,7 @@ export default function GalleriPage() {
                       setSearchQuery("*");
                       setRows(52);
                     }}
-                    className="bg-my-blue text-white px-6 py-3 rounded hover:bg-my-orangedark transition font-sans text-sm"
+                    className="bg-my-blue text-white px-6 py-3  hover:bg-my-blue/80 transition font-sans text-sm"
                   >
                     Nulstil filtre
                   </button>

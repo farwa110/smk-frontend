@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useUser, SignedIn, SignedOut } from "@clerk/nextjs";
+import { HiMenu, HiX } from "react-icons/hi";
 
 export default function BurgerMenu() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -12,10 +13,8 @@ export default function BurgerMenu() {
 
   return (
     <>
-      <button onClick={toggleMenu} className="lg:hidden flex flex-col gap-1.5 p-2">
-        <span className="block w-6 h-0.5 bg-current"></span>
-        <span className="block w-6 h-0.5 bg-current"></span>
-        <span className="block w-6 h-0.5 bg-current"></span>
+      <button onClick={toggleMenu} className="lg:hidden p-2">
+        {isMenuOpen ? <HiX className="w-6 h-6 text-my-blue" /> : <HiMenu className="w-6 h-6 text-my-blue" />}
       </button>
 
       {isMenuOpen && (
